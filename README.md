@@ -115,7 +115,7 @@ cor(marketing.numeric)
 - The marketing data set has over 4000 rows, which is a very large data set for this problem
 
 
-## 3. Now that assumptions are verified, create a backward, forward, and 'both' model and hold on to them to assess performance later
+## 4. Create a backward, forward, and 'both' model and hold on to them to assess performance later
 ```R
 null <- glm(made.account ~ 1, data=marketing, family='binomial')
 full <- glm(made.account ~ ., data=marketing, family='binomial')
@@ -132,7 +132,7 @@ both.model <- step(null, scope=list(lower=null, upper=full), direction='both')
 summary(both.model)
 AIC(both.model)
 ```
-## 4. Exhaustive Search for Best Attributes
+## 5. Exhaustive Search for Best Attributes
 
 ### Now we will try an exhaustive search of all variables in the dataset. A warning was returned in regards to linear dependencies, so we had to exclude the `housing` and `loan` columns from the analysis
 ```R
@@ -163,7 +163,7 @@ subset.model <- glm(made.account ~ age + job + month + campaign + previous + pou
 summary(subset.model)
 ```
 
-## 5. Analyze Models
+## 6. Analyze Models
 ### We now have four models to consider: forward.model, backward.model, both.model, and subset.model. Compare AIC and R^2:
 ```R
 # AIC Comparison
@@ -209,11 +209,11 @@ actual.sub <- (marketing$made.account == 1)
 sum(predicted.sub == actual.sub) / nrow(marketing) #0.9021
 ```
 
-## 6. Conclusion
+## 7. Conclusion
 ### Since the pseudo R^2s and predictive accuracy are about the same, we use AIC to judge. The backward.model clearly has is the best at modeling our bank marketing information. Cheers!
 ```R
 summary(backward.model)
 ```
 
-## 7. Credits
-### Thanks to Dr. Brian Lukoff for a wonderful STA 371G course that led to this final project! 
+## 8. Credits
+### Thanks to Dr. Brian Lukoff for a wonderful STA 371G course that led to this final project!
