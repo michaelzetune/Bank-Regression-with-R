@@ -214,3 +214,6 @@ sum(predicted.sub == actual.sub) / nrow(marketing) #0.9021
 ```R
 summary(backward.model)
 ```
+
+## 7. Credits
+### Thanks to Dr. Brian Lukoff for a wonderful STA 371G course that led to this final project! 
