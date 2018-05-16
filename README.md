@@ -5,7 +5,7 @@
 ## The script in this repo is replicated below in a more readable form:
 
 
-## 1. Pull csv from and view
+## 1. Download csv and view
 
 ```R
    marketing <- read.csv("https://raw.githubusercontent.com/MichaelZetune/Bank-Regression-with-R/master/Bank%20Data%20-%20bank-additional.csv")
@@ -15,10 +15,10 @@
 ## 2. Analyze and clean variables:
 
 #### We can keep the following variables as is for now:
-- `age` (numeric)
+- `age`: (numeric)
 - `job` : type of job (categorical: 'admin.','blue-collar','entrepreneur','housemaid','management','retired','self-employed','services','student','technician','unemployed','unknown')
 - `marital` : marital status (categorical: 'divorced','married','single','unknown'; note: 'divorced' means divorced or widowed)
-- `education` (categorical: 'basic.4y','basic.6y','basic.9y','high.school','illiterate','professional.course','university.degree','unknown')
+- `education`: (categorical: 'basic.4y','basic.6y','basic.9y','high.school','illiterate','professional.course','university.degree','unknown')
 - `default`: has credit in default? (categorical: 'no','yes','unknown')
 - `housing`: has housing loan? (categorical: 'no','yes','unknown')
 - `loan`: has personal loan? (categorical: 'no','yes','unknown')
@@ -39,34 +39,31 @@ related with the last contact of the current campaign:
 - `nr.employed`: number of employees - quarterly indicator (numeric)
 
 
-#### We need to do some cleaning for these:
-
+### We need to do some cleaning for `duration`, `pdays`, and `make.account`:
 
 `duration`: last contact duration, in seconds (numeric). Important note: this attribute highly affects the output target (e.g., if duration=0 then y='no'). **Yet, the duration is not known before a call is performed.** Also, after the end of the call y is obviously known. **Thus, this input should only be included for benchmark purposes and should be discarded if the intention is to have a realistic predictive model.**
 
 
-#### Thus, we should discard `duration`:
+##### Thus, we should discard `duration`:
 ```R
 marketing$duration <- NULL
 ```
 
-
 `pdays`: number of days that passed by after the client was last contacted from a previous campaign (numeric; 999 means client was not previously contacted)
 
-#### Since 999 is an arbitrary dummy varaible, we should make it NA:
+##### Since 999 is an arbitrary dummy varaible, we should make it NA:
 ```R
 marketing$pdays[marketing$pdays == 999] <- NA
 ```
 
-#### Since the vast majority of the data points are NA now, we will discard this column:
+##### Since the vast majority of the data points are NA now, we will discard this column:
 ```R
 marketing$pdays <- NULL
 ```
 
-
 `make.account` - has the client subscribed a term deposit? (binary: 'yes','no')
 
-#### Let's make this a clearer dummy variable to suit it for logistic regression. We'll change the name of the column slightly and delete the original column to make this happen:
+##### Let's make this a clearer dummy variable to suit it for logistic regression. We'll change the name of the column slightly and delete the original column to make this happen:
 
 ```R
 marketing$made.account[marketing$make.account == 'yes'] <- 1
@@ -74,7 +71,7 @@ marketing$made.account[marketing$make.account == 'no'] <- 0
 marketing$make.account <- NULL
 ```
 
-#### Now we will create the initial model, using all of the variables:
+##### Now we will create the initial model, using all of the variables:
 
 ```R
 model1 <- glm(made.account ~ ., data=marketing, family='binomial')
@@ -95,19 +92,19 @@ library(car)
 vif(model1) # returns error, fix is below
 ```
 
-### VIF returns an error with aliased coefficients, so we need to find where the perfect multicollinearity is:
+#### VIF returns an error with aliased coefficients, so we need to find where the perfect multicollinearity is:
 ```R
 alias(model1)
 ```
 
-### We find that loan is "unknown" *if and only if* housing if "unknown". So we should eliminate rows from the dataset where housing is unknown
+#### We find that loan is "unknown" *if and only if* housing is "unknown". So we should eliminate rows from the dataset where housing is unknown
 ```R
 marketing <- subset(marketing, marketing$housing != 'unknown')
 model1 <- glm(made.account ~ ., data=marketing, family='binomial')
 alias(model1)
 ```
 
-### Now use a correlation matrix to verify minimal multicollinearity in general:
+#### Now use a correlation matrix to verify minimal multicollinearity in general:
 ```R
 marketing.numeric.bool <- unlist(lapply(marketing, is.numeric))
 marketing.numeric <- marketing[ , marketing.numeric.bool]
@@ -137,7 +134,7 @@ AIC(both.model)
 ```
 ## 4. Exhaustive Search for Best Attributes
 
-### Now we will try an exhaustive search of all variables in the dataset. A warning was returned in regards to lienar dependencies, so we had to exclude the 'housing' and 'loan' columns from the analysis
+### Now we will try an exhaustive search of all variables in the dataset. A warning was returned in regards to linear dependencies, so we had to exclude the `housing` and `loan` columns from the analysis
 ```R
 install.packages("leaps")
 library(leaps)
