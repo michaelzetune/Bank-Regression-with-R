@@ -1,5 +1,6 @@
 # Pull csv from Michael's GitHub
-marketing <- read.csv("https://raw.githubusercontent.com/MichaelZetune/RegressionMarketing/master/Bank%20Data%20-%20bank-additional.csv")
+marketing <- read.csv("https://raw.githubusercontent.com/MichaelZetune/Bank-Regression-with-R/master/Bank%20Data%20-%20bank-additional.csv")
+View(marketing)
 
 #View(marketing)
 
@@ -14,7 +15,7 @@ marketing <- read.csv("https://raw.githubusercontent.com/MichaelZetune/Regressio
 # 6 - housing: has housing loan? (categorical: 'no','yes','unknown')
 # 7 - loan: has personal loan? (categorical: 'no','yes','unknown')
 # # related with the last contact of the current campaign:
-# 8 - contact: contact communication type (categorical: 'cellular','telephone') 
+# 8 - contact: contact communication type (categorical: 'cellular','telephone')
 # 9 - month: last contact month of year (categorical: 'jan', 'feb', 'mar', ..., 'nov', 'dec')
 # 10 - day_of_week: last contact day of the week (categorical: 'mon','tue','wed','thu','fri')
 # # other attributes:
@@ -23,8 +24,8 @@ marketing <- read.csv("https://raw.githubusercontent.com/MichaelZetune/Regressio
 # 15 - poutcome: outcome of the previous marketing campaign (categorical: 'failure','nonexistent','success')
 # # social and economic context attributes
 # 16 - emp.var.rate: employment variation rate - quarterly indicator (numeric)
-# 17 - cons.price.idx: consumer price index - monthly indicator (numeric) 
-# 18 - cons.conf.idx: consumer confidence index - monthly indicator (numeric) 
+# 17 - cons.price.idx: consumer price index - monthly indicator (numeric)
+# 18 - cons.conf.idx: consumer confidence index - monthly indicator (numeric)
 # 19 - euribor3m: euribor 3 month rate - daily indicator (numeric)
 # 20 - nr.employed: number of employees - quarterly indicator (numeric)
 
