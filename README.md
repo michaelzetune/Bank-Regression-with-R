@@ -2,53 +2,56 @@
 
 ## This project was created for an upper-division statistics course at UT. We used data from UCI's [dataset](https://archive.ics.uci.edu/ml/datasets/Bank+Marketing) on their Machine Learning Repository.
 
-## The R script in this repo is replicated below in a more readable form:
+## The script in this repo is replicated below in a more readable form:
 
 
-## 1. Pull csv from Michael's GitHub and view
+## 1. Pull csv from and view
 
 ```R
    marketing <- read.csv("https://raw.githubusercontent.com/MichaelZetune/Bank-Regression-with-R/master/Bank%20Data%20-%20bank-additional.csv")
    View(marketing)
 ```
 
-## 2. Analyze variables:
+## 2. Analyze and clean variables:
 
 #### We can keep the following variables as is for now:
-- __age__ (numeric)
-- __job__ : type of job (categorical: 'admin.','blue-collar','entrepreneur','housemaid','management','retired','self-employed','services','student','technician','unemployed','unknown')
-- __marital__ : marital status (categorical: 'divorced','married','single','unknown'; note: 'divorced' means divorced or widowed)
-- __education__ (categorical: 'basic.4y','basic.6y','basic.9y','high.school','illiterate','professional.course','university.degree','unknown')
-- __default__: has credit in default? (categorical: 'no','yes','unknown')
-- __housing__: has housing loan? (categorical: 'no','yes','unknown')
-- __loan__: has personal loan? (categorical: 'no','yes','unknown')
+- `age` (numeric)
+- `job` : type of job (categorical: 'admin.','blue-collar','entrepreneur','housemaid','management','retired','self-employed','services','student','technician','unemployed','unknown')
+- `marital` : marital status (categorical: 'divorced','married','single','unknown'; note: 'divorced' means divorced or widowed)
+- `education` (categorical: 'basic.4y','basic.6y','basic.9y','high.school','illiterate','professional.course','university.degree','unknown')
+- `default`: has credit in default? (categorical: 'no','yes','unknown')
+- `housing`: has housing loan? (categorical: 'no','yes','unknown')
+- `loan`: has personal loan? (categorical: 'no','yes','unknown')
 related with the last contact of the current campaign:
-- __contact__: contact communication type (categorical: 'cellular','telephone')
-- __month__: last contact month of year (categorical: 'jan', 'feb', 'mar', ..., 'nov', 'dec')
-- __day_of_week__: last contact day of the week (categorical: 'mon','tue','wed','thu','fri')
+- `contact`: contact communication type (categorical: 'cellular','telephone')
+- `month`: last contact month of year (categorical: 'jan', 'feb', 'mar', ..., 'nov', 'dec')
+- `day_of_week`: last contact day of the week (categorical: 'mon','tue','wed','thu','fri')
 
 #### Other attributes:
-- __campaign__: number of contacts performed during this campaign and for this client (numeric, includes last contact)
-- __previous__: number of contacts performed before this campaign and for this client (numeric)
-- __poutcome__: outcome of the previous marketing campaign (categorical: 'failure','nonexistent','success')
+- `campaign`: number of contacts performed during this campaign and for this client (numeric, includes last contact)
+- `previous`: number of contacts performed before this campaign and for this client (numeric)
+- `poutcome`: outcome of the previous marketing campaign (categorical: 'failure','nonexistent','success')
  social and economic context attributes
-- __emp.var.rate__: employment variation rate - quarterly indicator (numeric)
-- __cons.price.idx__: consumer price index - monthly indicator (numeric)
-- __cons.conf.idx__: consumer confidence index - monthly indicator (numeric)
-- __euribor3m__: euribor 3 month rate - daily indicator (numeric)
-- __nr.employed__: number of employees - quarterly indicator (numeric)
+- `emp.var.rate`: employment variation rate - quarterly indicator (numeric)
+- `cons.price.idx`: consumer price index - monthly indicator (numeric)
+- `cons.conf.idx`: consumer confidence index - monthly indicator (numeric)
+- `euribor3m`: euribor 3 month rate - daily indicator (numeric)
+- `nr.employed`: number of employees - quarterly indicator (numeric)
 
 
 #### We need to do some cleaning for these:
 
-- __duration__: last contact duration, in seconds (numeric). Important note: this attribute highly affects the output target (e.g., if duration=0 then y='no'). Yet, the duration is not known before a call is performed. Also, after the end of the call y is obviously known. Thus, this input should only be included for benchmark purposes and should be discarded if the intention is to have a realistic predictive model.
 
-#### We should discard duration:
+`duration`: last contact duration, in seconds (numeric). Important note: this attribute highly affects the output target (e.g., if duration=0 then y='no'). **Yet, the duration is not known before a call is performed.** Also, after the end of the call y is obviously known. **Thus, this input should only be included for benchmark purposes and should be discarded if the intention is to have a realistic predictive model.**
+
+
+#### Thus, we should discard `duration`:
 ```R
 marketing$duration <- NULL
 ```
 
-- __pdays__: number of days that passed by after the client was last contacted from a previous campaign (numeric; 999 means client was not previously contacted)
+
+`pdays`: number of days that passed by after the client was last contacted from a previous campaign (numeric; 999 means client was not previously contacted)
 
 #### Since 999 is an arbitrary dummy varaible, we should make it NA:
 ```R
@@ -60,7 +63,8 @@ marketing$pdays[marketing$pdays == 999] <- NA
 marketing$pdays <- NULL
 ```
 
-- __make.account__ - has the client subscribed a term deposit? (binary: 'yes','no')
+
+`make.account` - has the client subscribed a term deposit? (binary: 'yes','no')
 
 #### Let's make this a clearer dummy variable to suit it for logistic regression. We'll change the name of the column slightly and delete the original column to make this happen:
 
@@ -208,7 +212,7 @@ actual.sub <- (marketing$made.account == 1)
 sum(predicted.sub == actual.sub) / nrow(marketing) #0.9021
 ```
 
-## 6. Conlusion
+## 6. Conclusion
 ### Since the pseudo R^2s and predictive accuracy are about the same, we use AIC to judge. The backward.model clearly has is the best at modeling our bank marketing information. Cheers!
 ```R
 summary(backward.model)
