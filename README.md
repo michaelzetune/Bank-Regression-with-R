@@ -1,6 +1,6 @@
 # Bank Marketing Regression with R
 
-## This project was created for an upper-division statistics course at UT. We used data from UCI's [dataset](https://archive.ics.uci.edu/ml/datasets/Bank+Marketing) on their Machine Learning Repository.
+## This project was created for an upper-division statistics course at UT. We used data from UCI's [dataset](https://archive.ics.uci.edu/ml/datasets/Bank+Marketing) on their Machine Learning Repository. We are trying to predict whether customers that are called to promote creating a new bank account would follow through based on many attributes.
 
 ## The script in this repo is replicated below in a more readable form:
 
