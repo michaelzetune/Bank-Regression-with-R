@@ -8,7 +8,7 @@ This project was created for an upper-division statistics course at UT. We used 
 ## 1. Download csv and view
 
 ```R
-   marketing <- read.csv("https://raw.githubusercontent.com/MichaelZetune/Bank-Regression-with-R/master/Bank%20Data%20-%20bank-additional.csv")
+   marketing <- read.csv("https://raw.githubusercontent.com/MichaelZetune/Bank-Regression-with-R/master/Bank_Data.csv")
    View(marketing)
 ```
 
